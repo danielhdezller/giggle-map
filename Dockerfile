@@ -7,6 +7,9 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npx prisma generate
 
-CMD ["node", "dist/index.js"]
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
+

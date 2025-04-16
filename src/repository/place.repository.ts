@@ -1,21 +1,12 @@
 import prisma from "../db/prisma";
+import {
+  CreatePlace,
+  IPlaceRepository,
+  Place,
+} from "../interfaces/place.interface";
 
-export interface Place {
-  id: string;
-  name: string;
-  description: string | null;
-  latitude: number;
-  longitude: number;
-  createdAt: Date;
-}
-
-export class PlaceRepository {
-  async createPlace(data: {
-    name: string;
-    description?: string;
-    latitude: number;
-    longitude: number;
-  }): Promise<Place> {
+export class PlaceRepository implements IPlaceRepository {
+  async createPlace(data: CreatePlace): Promise<Place> {
     try {
       return await prisma.place.create({ data });
     } catch (error) {
