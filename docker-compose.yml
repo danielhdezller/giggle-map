@@ -9,8 +9,11 @@ services:
     environment:
       NODE_ENV: development
       DATABASE_URL: postgresql://giggle:giggle123@postgres:5432/gigglemap
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       - postgres
+      - redis
     volumes:
       - .:/app
       - /app/node_modules
@@ -29,6 +32,14 @@ services:
       POSTGRES_DB: gigglemap
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gigglemap-net
+
+  redis:
+    image: redis:7
+    container_name: gigglemap-redis
+    ports:
+      - "6379:6379"
     networks:
       - gigglemap-net
 

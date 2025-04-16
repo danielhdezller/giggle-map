@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
-import placeRoutes from "./routes/place.routes";
+import placeRoutes from "./places/routes/place.routes";
 
 dotenv.config();
 
