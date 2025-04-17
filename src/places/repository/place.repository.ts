@@ -23,6 +23,15 @@ export class PlaceRepository implements IPlaceRepository {
     try {
       const radiusInKm = radius / 1000;
 
+      // Rough degree difference from radius in meters
+      const latDelta = radius / 111320; // meters per degree latitude
+      const lngDelta = radius / (111320 * Math.cos(lat * (Math.PI / 180)));
+
+      const minLat = lat - latDelta;
+      const maxLat = lat + latDelta;
+      const minLng = lng - lngDelta;
+      const maxLng = lng + lngDelta;
+
       return await prisma.$queryRaw<Place[]>`
         SELECT * FROM (
           SELECT *, 
@@ -33,6 +42,8 @@ export class PlaceRepository implements IPlaceRepository {
                 sin(radians(${lat})) * sin(radians(latitude))
             )) AS distance
           FROM "Place"
+          WHERE latitude BETWEEN ${minLat} AND ${maxLat}
+            AND longitude BETWEEN ${minLng} AND ${maxLng}
         ) AS subquery
         WHERE distance < ${radiusInKm}
         ORDER BY distance ASC;
