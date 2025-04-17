@@ -36,7 +36,7 @@ services:
       - gigglemap-net
 
   redis:
-    image: redis:7
+    image: redis:7-alpine
     container_name: gigglemap-redis
     ports:
       - "6379:6379"

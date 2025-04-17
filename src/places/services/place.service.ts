@@ -16,9 +16,8 @@ export class PlaceService {
     radius: number
   ): Promise<Place[]> {
     const cacheKey = `nearby:${lat}:${lng}:${radius}`;
-    const cached = await redis.get(cacheKey);
-
-    if (cached) {
+    const cached: string | null = await redis.get(cacheKey);
+    if (cached && cached !== null && JSON.parse(cached).length) {
       return JSON.parse(cached);
     }
 

@@ -24,6 +24,7 @@ export const getNearbyPlaces = async (
 
   if (!lat || !lng) {
     res.status(400).json({ error: "Latitude and longitude are required" });
+    return;
   }
 
   try {
@@ -48,6 +49,7 @@ export const getPlaceById = async (
     const place = await placeService.getPlaceById(req.params.id);
     if (!place) {
       res.status(404).json({ error: "Place not found" });
+      return;
     }
     res.status(200).json(place);
   } catch (error) {

@@ -1,3 +1,4 @@
+jest.mock("../../src/redis/redis");
 import request from "supertest";
 import app from "../../src/server";
 import prisma from "../../src/db/prisma";

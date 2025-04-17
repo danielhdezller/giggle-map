@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  test-db:
+    image: postgres:14
+    container_name: gigglemap-test-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: giggle
+      POSTGRES_PASSWORD: giggle123
+      POSTGRES_DB: gigglemap_test
+    volumes:
+      - pgtestdata:/var/lib/postgresql/data
+    networks:
+      - gigglemap-net
+
+volumes:
+  pgtestdata:
+
+networks:
+  gigglemap-net:
+    driver: bridge

@@ -3,4 +3,5 @@ export default {
   testEnvironment: "node",
   testMatch: ["**/tests/**/*.test.ts"],
   setupFiles: ["dotenv/config"],
+  detectOpenHandles: true,
 };
