@@ -15,6 +15,11 @@ export class PlaceRepository implements IPlaceRepository {
     }
   }
 
+  async findPlaceByIdWithDistance(id: number): Promise<Place> {
+    try {
+    } catch (error) {}
+  }
+
   async findNearbyPlaces(
     lat: number,
     lng: number,

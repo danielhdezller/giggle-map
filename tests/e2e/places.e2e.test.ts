@@ -41,6 +41,28 @@ describe("📍 Places End-to-End", () => {
     expect(res.body.length).toBeGreaterThan(0);
   });
 
+  it("should not return nearby places within a radius", async () => {
+    await prisma.place.create({ data: placePayload });
+
+    const res = await request(app).get(
+      `/api/places/nearby?lat=30.8584&lng=1.2945&radius=100`
+    );
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(0);
+  });
+
+  it("should not return distance", async () => {
+    await prisma.place.create({ data: placePayload });
+
+    const res = await request(app).get(
+      `/api/places/distance?idMainPlace=82591d81-86c1-422a-9665-ae8e3f51cc00&idPlaceTarget=___ `
+    );
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(0);
+  });
+
   it("should return 400 if lat/lng are missing in nearby query", async () => {
     const res = await request(app).get("/api/places/nearby?radius=1000");
     expect(res.statusCode).toBe(400);

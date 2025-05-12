@@ -28,7 +28,42 @@ export class PlaceService {
     return places;
   }
 
-  async getPlaceById(id: string): Promise<Place | null> {
-    return placeRepo.findById(id);
+  async findPlaceByIdWithDistance(
+    idMainPlace: string,
+    idPlaceTarget: string
+  ): Promise<number> {
+    const mainPlace = await this.getPlaceById(idMainPlace);
+    const placeTarget = await this.getPlaceById(idPlaceTarget);
+
+    const placeTargetRadians = placeTarget.latitude * (Math.PI / 180);
+    const placeTargetRadiansLongitude = placeTarget.longitude * (Math.PI / 180);
+    const mainPlaceRadiansLatitude = mainPlace.latitude * (Math.PI / 180);
+    const mainPlaceRadiansLongitude = mainPlace.longitude * (Math.PI / 180);
+
+    const distance =
+      6371 *
+      Math.acos(
+        Math.cos(
+          mainPlaceRadiansLatitude *
+            Math.cos(placeTargetRadians) *
+            Math.cos(
+              placeTargetRadiansLongitude -
+                mainPlaceRadiansLongitude +
+                Math.sin(
+                  mainPlaceRadiansLatitude * Math.sin(placeTargetRadians)
+                )
+            )
+        )
+      );
+
+    return distance;
+  }
+
+  async getPlaceById(id: string): Promise<Place> {
+    const place = await placeRepo.findById(id);
+    if (!place) {
+      throw new Error(`Not found place by id: ${id}.`);
+    }
+    return place;
   }
 }
